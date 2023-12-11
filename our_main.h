@@ -28,5 +28,4 @@ void check_command(char **ranim, char *arv[], int *fuad, int ind);
 void _exit_exit(char **ranim, int *fuad);
 void  put_environ(char **ranim, int *fuad);
 
-
 #endif

@@ -8,7 +8,7 @@
 
 int alrady_exist(char *ranim)
 {
-	char *esra[] = {"exit", "env", "cd", NULL};
+	char *esra[] = {"exit", "echo", "env", "cd", NULL};
 	int j;
 
 	for (j = 0; esra[j]; j++)
@@ -55,13 +55,26 @@ void _exit_exit(char **ranim, int *fuad)
 /**
  * put_environ - function print environ
  * @ranim: pointer to pointer
- * @fuad: string of integer
+ * @fuad: pointer of integer
  * Return: Nothing
  */
-void  put_environ(char **ranim, int *fuad)
+void  put_environ(char **ranim, int *fuad) 
 {
-	int j;
-
+	int j, i;
+	char *tmp = NULL;
+	
+	for(i = 0; environ[i]; i++)
+	{
+		for (j = 0; environ[j]; j++)
+		{
+			if (strcmp(environ[i], environ[j]) > 0)
+			{
+				tmp = environ[i];
+				environ[i] = environ[j];
+				environ[j] = tmp;
+			}
+		}
+	}
 	for (j = 0; environ[j]; j++)
 	{
 		write(STDOUT_FILENO, environ[j], strlen(environ[j]));

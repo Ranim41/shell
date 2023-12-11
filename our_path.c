@@ -11,13 +11,28 @@ char *_environ(char *var)
 	char *hind, *hana, *hawa, *env;
 	int i;
 
+	if (!environ)
+	{
+		fprintf(stderr, "Error: environ is NULL\n");
+        	return NULL;
+	}
 	for (i = 0; environ[i]; i++)
 	{
 		hind = strdup(environ[i]);
+		if (!hind)
+		{
+			fprintf(stderr, "Error: Memory allocation failed\n");
+			return NULL;
+		}
 		hana = strtok(hind, "=");
 		if (strcmp(hana, var) == 0)
 		{
 			hawa = strtok(NULL, "\n");
+			if (!hawa)
+			{
+				free(hind);
+				return NULL;
+			}
 			env = strdup(hawa);
 			free(hind);
 			return (env);
@@ -36,7 +51,7 @@ char *_environ(char *var)
 
 char *ourPath(char *ranim)
 {
-	char *_path, *ful_path, *dr;
+	char *_path, *ful_path = NULL, *dr;
 	struct stat esra;
 	int i;
 
@@ -64,12 +79,22 @@ char *ourPath(char *ranim)
 			strcat(ful_path, "\0");
 			if (stat(ful_path, &esra) == 0)
 			{
-				free(_path);
-				return (ful_path);
+				if (access(ful_path, X_OK) == 0)
+				{
+					free(_path);
+					return (ful_path);
+				}
 			}
-			free(ful_path);
-			ful_path = NULL;
-			dr = strtok(NULL, ":");
+			else
+			{
+				free(ful_path);
+				ful_path = NULL;
+				dr = strtok(NULL, ":");
+			}
+			if (stat(ranim, &esra) == 0)
+			{	
+				return (ranim);
+			}
 		}
 	}
 	free(_path);
@@ -85,7 +110,7 @@ char *ourPath(char *ranim)
  */
 void _error(char *path, char *command, int ind)
 {
-	char *fuad; 
+	char *fuad;
 	char msg[] = ": not found\n";
 
 	fuad = ranim(ind);

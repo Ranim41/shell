@@ -56,7 +56,7 @@ char **our_tokenizer(char *atika)
 		return (NULL);
 	}
 	tok = strtok(atika, delm);
-	for (i = 0; tok; i++)
+	for (i = 0; tok != NULL; i++)
 	{
 		cmd[i] = strdup(tok);
 		tok = strtok(NULL, delm);
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 			continue;
 
 		if (alrady_exist(atika[0]))
-			 check_command(atika, argv, &stat, ind);
+			check_command(atika, argv, &stat, ind);
 		else
 			stat = execute_fun(atika, argv, ind);
 	}
